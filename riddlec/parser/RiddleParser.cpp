@@ -139,7 +139,7 @@ void riddleparserParserInitialize() {
   	1,18,1,18,1,18,1,19,1,19,1,19,3,19,381,8,19,1,19,1,19,3,19,385,8,19,1,
   	19,1,19,3,19,389,8,19,1,19,1,19,1,19,1,20,1,20,3,20,396,8,20,1,21,1,21,
   	1,21,1,21,1,22,1,22,1,22,1,22,1,23,1,23,1,23,0,1,6,24,0,2,4,6,8,10,12,
-  	14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,0,9,3,0,50,51,55,55,
+  	14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,0,9,3,0,50,51,55,56,
   	64,64,1,0,14,15,1,0,52,54,1,0,50,51,1,0,47,48,1,0,43,46,1,0,40,41,2,0,
   	42,42,65,74,1,0,1,2,461,0,49,1,0,0,0,2,58,1,0,0,0,4,64,1,0,0,0,6,82,1,
   	0,0,0,8,157,1,0,0,0,10,159,1,0,0,0,12,187,1,0,0,0,14,189,1,0,0,0,16,207,
@@ -365,7 +365,7 @@ RiddleParser::ProgramContext* RiddleParser::program() {
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473122349973150) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530716387901086) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0));
     setState(53);
     match(RiddleParser::EOF);
@@ -555,6 +555,7 @@ RiddleParser::ExpressionEndContext* RiddleParser::expressionEnd() {
       case RiddleParser::Sub:
       case RiddleParser::Star:
       case RiddleParser::Not:
+      case RiddleParser::And:
       case RiddleParser::Tilde:
       case RiddleParser::Identifier:
       case RiddleParser::Decimal:
@@ -855,6 +856,10 @@ tree::TerminalNode* RiddleParser::UnaryOpContext::Sub() {
 
 tree::TerminalNode* RiddleParser::UnaryOpContext::Tilde() {
   return getToken(RiddleParser::Tilde, 0);
+}
+
+tree::TerminalNode* RiddleParser::UnaryOpContext::And() {
+  return getToken(RiddleParser::And, 0);
 }
 
 RiddleParser::UnaryOpContext::UnaryOpContext(ExpressionContext *ctx) { copyFrom(ctx); }
@@ -1538,6 +1543,7 @@ RiddleParser::ExpressionContext* RiddleParser::expression(int precedence) {
       case RiddleParser::Add:
       case RiddleParser::Sub:
       case RiddleParser::Not:
+      case RiddleParser::And:
       case RiddleParser::Tilde: {
         _localctx = _tracker.createInstance<UnaryOpContext>(_localctx);
         _ctx = _localctx;
@@ -1546,7 +1552,7 @@ RiddleParser::ExpressionContext* RiddleParser::expression(int precedence) {
         antlrcpp::downCast<UnaryOpContext *>(_localctx)->op = _input->LT(1);
         _la = _input->LA(1);
         if (!(((((_la - 50) & ~ 0x3fULL) == 0) &&
-          ((1ULL << (_la - 50)) & 16419) != 0))) {
+          ((1ULL << (_la - 50)) & 16483) != 0))) {
           antlrcpp::downCast<UnaryOpContext *>(_localctx)->op = _errHandler->recoverInline(this);
         }
         else {
@@ -1919,7 +1925,7 @@ RiddleParser::ExpressionContext* RiddleParser::expression(int precedence) {
 
           _la = _input->LA(1);
           if ((((_la & ~ 0x3fULL) == 0) &&
-            ((1ULL << _la) & 44473120202489502) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+            ((1ULL << _la) & 116530714240417438) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
             ((1ULL << (_la - 64)) & 12658689) != 0)) {
             setState(126);
             expression(0);
@@ -2990,7 +2996,7 @@ RiddleParser::BlockContext* RiddleParser::block() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473122349973150) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530716387901086) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0)) {
       setState(257);
       expressionEnd();
@@ -3087,7 +3093,7 @@ RiddleParser::InitListContext* RiddleParser::initList() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473120202489502) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530714240417438) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0)) {
       setState(266);
       expression(0);
@@ -3963,7 +3969,7 @@ RiddleParser::ForStmtContext* RiddleParser::forStmt() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473120202489502) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530714240417438) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0)) {
       setState(379);
       antlrcpp::downCast<ForStmtContext *>(_localctx)->init = expression(0);
@@ -3975,7 +3981,7 @@ RiddleParser::ForStmtContext* RiddleParser::forStmt() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473120202489502) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530714240417438) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0)) {
       setState(383);
       antlrcpp::downCast<ForStmtContext *>(_localctx)->cond = expression(0);
@@ -3987,7 +3993,7 @@ RiddleParser::ForStmtContext* RiddleParser::forStmt() {
 
     _la = _input->LA(1);
     if ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 44473120202489502) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
+      ((1ULL << _la) & 116530714240417438) != 0) || ((((_la - 64) & ~ 0x3fULL) == 0) &&
       ((1ULL << (_la - 64)) & 12658689) != 0)) {
       setState(387);
       antlrcpp::downCast<ForStmtContext *>(_localctx)->change = expression(0);

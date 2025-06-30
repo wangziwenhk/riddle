@@ -16,7 +16,7 @@
  */
 
 #include "GrammarVisitor.h"
-#include "ir/IRNode.h"
+#include "ir/Value.h"
 
 namespace riddle {
     std::any GrammarVisitor::visitProgram(RiddleParser::ProgramContext *context) {

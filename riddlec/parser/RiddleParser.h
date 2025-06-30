@@ -289,6 +289,7 @@ public:
     antlr4::tree::TerminalNode *Add();
     antlr4::tree::TerminalNode *Sub();
     antlr4::tree::TerminalNode *Tilde();
+    antlr4::tree::TerminalNode *And();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

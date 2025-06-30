@@ -17,7 +17,6 @@
 
 #pragma once
 #include <memory>
-#include <utility>
 #include <vector>
 
 #include "RiddleContext.h"
@@ -39,7 +38,9 @@ namespace riddle {
         explicit Value(RiddleContext &context): _ctx(context) {}
 
     public:
-        virtual ~Value() = default;
+        virtual ~Value() {
+            _ctx.deallocate(this);
+        }
 
         void replace(Value *V) const;
     };

@@ -16,12 +16,6 @@
  */
 
 #pragma once
-#include "Pass.h"
-
-
 namespace riddle {
-    class PassManager {
-    public:
-        void addPass(Pass)
-    };
+    class PassManager {};
 } // riddle

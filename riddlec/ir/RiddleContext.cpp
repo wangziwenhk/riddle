@@ -15,11 +15,17 @@
  *
  */
 
-//
-// Created by wangz on 25-6-29.
-//
 
 #include "RiddleContext.h"
 
+#include <ranges>
+
+#include "Type.h"
+
 namespace riddle {
+    RiddleContext::~RiddleContext() {
+        for (const auto val: commonTypeTable | std::views::values) {
+            delete val;
+        }
+    }
 } // riddle

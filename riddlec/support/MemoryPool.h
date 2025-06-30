@@ -22,7 +22,7 @@
 namespace riddle {
     class MemoryPool {
     public:
-        MemoryPool(const size_t blockSize) : blockSize(blockSize) {}
+        explicit MemoryPool(const size_t blockSize) : blockSize(blockSize) {}
 
         void *allocate(size_t size) {
             if (freeBlocks.empty()) {

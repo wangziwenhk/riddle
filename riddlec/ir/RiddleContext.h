@@ -17,25 +17,66 @@
 
 #pragma once
 
+#include <string>
+#include <unordered_map>
+#include <functional>
+#include <stdexcept>
+
 #include "support/MemoryPool.h"
 
 namespace riddle {
+    class Type;
+    class ArrayType;
+
     class RiddleContext {
+        friend Type;
         MemoryPool pool;
+        std::unordered_map<std::string, Type *> typeTable;
+        std::unordered_map<size_t, Type *> commonTypeTable;
+
+        using Deleter = std::function<void(void*, MemoryPool&)>;
+        std::unordered_map<size_t, Deleter> deleterTable;
 
     public:
         RiddleContext(): pool(1024) {}
+
+        ~RiddleContext();
 
         template<typename Tp, typename... Args>
         Tp *create(Args &&... args) {
             void *memory = pool.allocate(sizeof(Tp));
             Tp *object = new(memory) Tp(std::forward<Args>(args)...);
+
+            const size_t id = typeid(Tp).hash_code();
+            if (!deleterTable.contains(id)) {
+                deleterTable[id] = [](void* p, MemoryPool& pool) {
+                    static_cast<Tp*>(p)->~Tp();
+                    pool.deallocate(p);
+                };
+            }
+
             return object;
         }
 
-        template <typename Tp>
-        static void deallocate(Tp* ptr) {
-            delete ptr;
+        template<std::derived_from<Type> Tp, typename... Args>
+        Tp *createCommonType(Args &&... args) {
+            const size_t index = typeid(Tp).hash_code();
+            if (commonTypeTable.contains(index)) {
+                return commonTypeTable[index];
+            }
+            return commonTypeTable[index] = create<Tp>(std::forward<Args>(args)...);
+        }
+
+        template<typename Tp>
+        void deallocate(Tp *p) {
+            if (!p) return;
+            const size_t id = typeid(*p).hash_code();
+
+            const auto it = deleterTable.find(id);
+            if (it == deleterTable.end())
+                throw std::runtime_error("Unknown type passed to destroy()");
+
+            it->second(p, pool);
         }
     };
 } // riddle
