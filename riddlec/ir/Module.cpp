@@ -15,13 +15,7 @@
  *
  */
 
-#pragma once
-#include <string>
+#include "Module.h"
 
 namespace riddle {
-    struct SourceLocation {
-        std::string filename;
-        unsigned line;
-        unsigned column;
-    };
 } // riddle

@@ -16,7 +16,23 @@
  */
 
 #pragma once
+#include "Value.h"
 
 namespace riddle {
-    class PassManager {};
-} // riddle
+    class GlobalObject : public Instruction {
+    protected:
+        explicit GlobalObject(RiddleContext &context): Instruction(context) {}
+    };
+
+    class Function final : public GlobalObject {
+    protected:
+        std::string name;
+        explicit Function(RiddleContext &context)
+            : GlobalObject(context) {}
+
+    public:
+        std::string_view getName() const {
+            return name;
+        }
+    };
+}

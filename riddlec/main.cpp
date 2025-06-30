@@ -18,27 +18,14 @@
 #include <antlr4-runtime.h>
 #include <chrono>
 #include <filesystem>
-#include <iostream>
 
-#include "args.h"
-#include "generate/config.h"
-#include "generate/Generate.h"
-#include "grammar/GramVisitor.h"
-#include "nodes/NodePrinter.h"
 #include "parser/RiddleLexer.h"
-#include "semantic/Analyzer.h"
-
-void init() {
-    riddle::globalContext = std::make_shared<llvm::LLVMContext>();
-}
-
+#include "parser/RiddleParser.h"
+#include "support/signal_handler.h"
 
 int main(int argc, char **argv) {
-    if (!riddle::parseArgs(argc, argv)) {
-        return -1;
-    }
-
-    std::ifstream in(riddle::build_args.inputFiles[0]);
+    init_signal();
+    std::ifstream in(argv[1]);
 
     std::stringstream buffer;
     buffer << in.rdbuf();
@@ -49,20 +36,4 @@ int main(int argc, char **argv) {
     RiddleParser parser(&tokens);
 
     auto tree = parser.program();
-    riddle::GramVisitor visitor;
-    auto result = visitor.nodeVisit(tree);
-
-    try {
-        riddle::Analyzer analyzer;
-        analyzer.visit(result);
-
-        init();
-        riddle::Generate generate;
-        generate.info->triple = llvm::Triple(riddle::build_args.triple);
-        generate.visit(result);
-        generate.info->buildToFile();
-    } catch (std::exception &e) {
-        std::cerr << e.what();
-        return 0;
-    }
 }

@@ -15,7 +15,21 @@
  *
  */
 
-#include "SourceLocation.h"
+#pragma once
+#include <iostream>
+#include <cstring>
 
-namespace riddle {
-} // riddle
+inline void sigsegv_handler(const int sig) {
+    std::cerr << "Fatal error: Segmentation Fault (core dump)" << std::endl;
+    exit(SIGSEGV);
+}
+
+inline void sigabrt_handler(const int sig) {
+    std::cerr << "Fatal error: Aborted (core dump)" << std::endl;
+    exit(SIGABRT);
+}
+
+inline void init_signal() {
+    signal(SIGSEGV, sigsegv_handler);
+    signal(SIGABRT, sigabrt_handler);
+}

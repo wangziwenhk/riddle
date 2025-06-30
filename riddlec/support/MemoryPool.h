@@ -14,21 +14,31 @@
  * limitations under the License.
  *
  */
+
 #pragma once
-#include <string>
-#include <utility>
+#include <cstdlib>
 #include <vector>
 
 namespace riddle {
-    class ExprNode;
-
-    class Annotation final {
+    class MemoryPool {
     public:
-        std::string name;
-        std::vector<ExprNode *> params;
+        MemoryPool(const size_t blockSize) : blockSize(blockSize) {}
 
-        Annotation(std::string name,
-                   const std::vector<ExprNode *> &params): name(std::move(name)),
-                                                           params(params) {}
+        void *allocate(size_t size) {
+            if (freeBlocks.empty()) {
+                freeBlocks.push_back(std::malloc(blockSize));
+            }
+            void *block = freeBlocks.back();
+            freeBlocks.pop_back();
+            return block;
+        }
+
+        void deallocate(void *ptr) {
+            freeBlocks.push_back(ptr);
+        }
+
+    private:
+        size_t blockSize;
+        std::vector<void *> freeBlocks;
     };
 }

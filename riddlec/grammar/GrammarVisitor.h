@@ -15,4 +15,14 @@
  *
  */
 
-#include "SemObject.h"
+#pragma once
+
+#include "parser/RiddleParserBaseVisitor.h"
+
+namespace riddle {
+    class GrammarVisitor final : public RiddleParserBaseVisitor {
+    public:
+        std::any visitProgram(RiddleParser::ProgramContext *context) override;
+        std::any visitFuncDecl(RiddleParser::FuncDeclContext *context) override;
+    };
+} // riddle

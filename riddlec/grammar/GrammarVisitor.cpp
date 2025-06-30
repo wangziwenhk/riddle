@@ -15,12 +15,19 @@
  *
  */
 
-#pragma once
+#include "GrammarVisitor.h"
+#include "ir/IRNode.h"
 
 namespace riddle {
+    std::any GrammarVisitor::visitProgram(RiddleParser::ProgramContext *context) {
+        for (const auto i:context->children) {
+            visit(i);
+        }
+        return {};
+    }
 
-class SourceManager {
-
-};
-
+    std::any GrammarVisitor::visitFuncDecl(RiddleParser::FuncDeclContext *context) {
+        const auto name = context->getText();
+        return RiddleParserBaseVisitor::visitFuncDecl(context);
+    }
 } // riddle

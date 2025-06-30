@@ -15,4 +15,27 @@
  *
  */
 
-#include "support/Trie.hpp"
+#pragma once
+
+#include "support/MemoryPool.h"
+
+namespace riddle {
+    class RiddleContext {
+        MemoryPool pool;
+
+    public:
+        RiddleContext(): pool(1024) {}
+
+        template<typename Tp, typename... Args>
+        Tp *create(Args &&... args) {
+            void *memory = pool.allocate(sizeof(Tp));
+            Tp *object = new(memory) Tp(std::forward<Args>(args)...);
+            return object;
+        }
+
+        template <typename Tp>
+        static void deallocate(Tp* ptr) {
+            delete ptr;
+        }
+    };
+} // riddle

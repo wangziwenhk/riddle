@@ -14,7 +14,14 @@
  * limitations under the License.
  *
  */
-#include "SourceManager.h"
+
+#pragma once
+#include "Pass.h"
+
 
 namespace riddle {
+    class PassManager {
+    public:
+        void addPass(Pass)
+    };
 } // riddle

@@ -16,7 +16,17 @@
  */
 
 #pragma once
+#include <string>
+#include <unordered_map>
 
 namespace riddle {
-    using byte = unsigned char;
-}
+    class GlobalObject;
+
+    class Module {
+    protected:
+        std::unordered_map<std::string, GlobalObject *> globals;
+
+    public:
+        Module() = default;
+    };
+} // riddle
